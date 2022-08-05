@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { TailwindProvider } from "tailwindcss-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+
 import { HomeScreen, Onboarding, Preference } from "./screens";
 import React from "react";
 
