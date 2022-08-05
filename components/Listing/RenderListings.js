@@ -1,6 +1,8 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import ListingCard from "./ListingCard";
+const DataList = [{}, {}, {}, {}, {}, {}, {}, {}];
+
 
 const RenderListings = () => {
   return (
@@ -15,7 +17,9 @@ const RenderListings = () => {
       </View>
 
       <View className="my-1">
-        <ListingCard />
+      {DataList.map((item, index) => {
+        return <ListingCard key={index}/>
+      })}
       </View>
     </View>
   );
