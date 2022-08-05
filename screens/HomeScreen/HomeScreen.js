@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   ScrollView,
   FlatList,
+  Dimensions
 } from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
@@ -15,11 +16,20 @@ const DataList = [{}, {}, {}, {}, {}, {}, {}, {}];
 
 const HomeScreen = () => {
   const [scrollHeight, setScrollHeight] = React.useState(0);
+  console.log(scrollHeight)
 
   return (
     <SafeAreaView style={{ flex: 1 }} className="bg-white">
       <Header scrollHeight={scrollHeight} />
-      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+      <ScrollView 
+      style={{ flex: 1 }} 
+      showsVerticalScrollIndicator={false}
+      onScroll={(e) => {
+        const scrollHeight = e.nativeEvent.contentOffset.y;
+        setScrollHeight(scrollHeight);
+      }}
+
+      >
         <View className="py-5">
           <Suggestion />
         </View>
@@ -33,9 +43,10 @@ const HomeScreen = () => {
 const Header = ({ scrollHeight }) => {
   return (
     <View
-      className={`${
-        scrollHeight > 0 && "shadow-lg"
-      } px-5 bg-white py-2 flex flex-row items-center justify-between border-b border-gray-400`}
+    style={{
+      elevation: scrollHeight > 0 ? 0 : 2,
+    }}
+      className={`${scrollHeight > 0 && "shadow-lg"} px-5 bg-white py-2 flex flex-row items-center justify-between border-b border-gray-400`}
     >
       <Text className="text-xl font-bold capitalize tracking-wider">
         Internzone
