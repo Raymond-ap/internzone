@@ -75,11 +75,12 @@ const Preference = () => {
     } else {
       userPreferences = [];
     }
-    // let uniquePreferences =  
-    userPreferences = [...userPreferences, ...selectedPreferences];
+    let uniquePreferences = [
+      ...new Set([...userPreferences, ...selectedPreferences]),
+    ];
     await AsyncStorage.setItem(
       "userPreferences",
-      JSON.stringify(userPreferences)
+      JSON.stringify(uniquePreferences)
     );
     navigation.navigate("Home");
   };
