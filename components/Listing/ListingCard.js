@@ -1,12 +1,19 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text, TouchableOpacity, Platform } from "react-native";
+import React from "react";
 
 const ListingCard = () => {
   return (
-    <View>
-      <Text>ListingCard</Text>
-    </View>
-  )
-}
+    <TouchableOpacity
+      activeOpacity={0.8}
+      className={`flex ${
+        Platform.OS !== "ios" && Platform.OS !== "android"
+          ? "flex-row justify-between"
+          : "flex-col"
+      } `}
+    >
+     
+    </TouchableOpacity>
+  );
+};
 
-export default ListingCard
+export default ListingCard;
