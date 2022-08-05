@@ -1,19 +1,42 @@
-import { View, Text, TouchableOpacity, SafeAreaView } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  SafeAreaView,
+  ScrollView,
+  FlatList,
+} from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
+import { Suggestion, ListingCard, RenderListings } from "../../components";
+
+const DataList = [{}, {}, {}, {}, {}, {}, {}, {}];
 
 const HomeScreen = () => {
+  const [scrollHeight, setScrollHeight] = React.useState(0);
+
   return (
     <SafeAreaView style={{ flex: 1 }} className="bg-white">
-      <Header />
+      <Header scrollHeight={scrollHeight} />
+      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+        <View className="py-5">
+          <Suggestion />
+        </View>
+        <RenderListings />
+      </ScrollView>
+      <StatusBar style="dark" backgroundColor="#fff" translucent={false} />
     </SafeAreaView>
   );
 };
 
-const Header = () => {
+const Header = ({ scrollHeight }) => {
   return (
-    <View className="px-5 bg-white py-5 flex flex-row items-center justify-between border-b border-gray-400">
+    <View
+      className={`${
+        scrollHeight > 0 && "shadow-lg"
+      } px-5 bg-white py-2 flex flex-row items-center justify-between border-b border-gray-400`}
+    >
       <Text className="text-xl font-bold capitalize tracking-wider">
         Internzone
       </Text>
