@@ -1,14 +1,16 @@
-import { Text, View } from 'react-native'
-import React, { Component } from 'react'
+import { Text, View, SafeAreaView } from "react-native";
+import React, { Component } from "react";
+import { StatusBar } from "expo-status-bar";
 
 export class SearchScreen extends Component {
   render() {
     return (
-      <View>
+      <SafeAreaView className="bg-white" style={{ flex: 1 }}>
         <Text>SearchScreen</Text>
-      </View>
-    )
+        <StatusBar style="dark" backgroundColor="#fff" translucent={false} />
+      </SafeAreaView>
+    );
   }
 }
 
-export default SearchScreen
+export default SearchScreen;
