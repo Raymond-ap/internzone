@@ -6,6 +6,8 @@ import {
   ScrollView,
   RefreshControl,
   Image,
+  Linking,
+  Alert,
 } from "react-native";
 import React from "react";
 import { StatusBar } from "expo-status-bar";
@@ -26,6 +28,7 @@ const ListingDetail = ({ route }) => {
   const [listing, setListing] = React.useState({});
   const [requirements, setRequirements] = React.useState([]);
   const [task, setTask] = React.useState([]);
+  const [applicationTip, setApplicationTip] = React.useState([]);
   const [scrollHeight, setScrollHeight] = React.useState(0);
   const tabs = ["overview", "company"];
   const docId = route.params.docId;
@@ -41,9 +44,12 @@ const ListingDetail = ({ route }) => {
         setListing(snapshot.data());
         setRequirements(snapshot.data().requirements);
         setTask(snapshot.data().task);
+        setApplicationTip(snapshot.data().applyRequirements);
         setIsLoading(false);
       })
-      .then(() => {})
+      .then(() => {
+        setIsLoading(false);
+      })
       .catch((error) => {
         console.log("message", error.message);
       });
@@ -53,6 +59,15 @@ const ListingDetail = ({ route }) => {
     setIsLoading(true);
     await wait(1000);
     fetchListing();
+  };
+
+  const applyJob = async () => {
+    const applicationLink = listing.applyLink;
+    if (applicationLink) {
+      Linking.openURL(applicationLink);
+    } else {
+      Alert.alert("No Application Link Found");
+    }
   };
 
   React.useEffect(() => {
@@ -77,7 +92,7 @@ const ListingDetail = ({ route }) => {
             <TouchableOpacity activeOpacity={0.8}>
               <Ionicons name="ios-bookmark-outline" size={20} color="black" />
             </TouchableOpacity>
-            <View className="mx-1" />
+            <View className="mx-2" />
             <TouchableOpacity activeOpacity={0.8}>
               <Ionicons name="ios-share-outline" size={20} color="black" />
             </TouchableOpacity>
@@ -106,12 +121,23 @@ const ListingDetail = ({ route }) => {
           <Text className="text-sm text-gray-900 font-semibold capitalize tracking-wider">
             {listing?.company}
           </Text>
-          <Text className="text-sm text-gray-500 font-medium capitalize tracking-wider">
+          <Text className="text-sm text-gray-500 font-medium capitalize tracking-wider mb-2">
             {listing?.location}
           </Text>
         </View>
-        <View className="my-2">
-
+        <View className="my-2 px-3 flex-row gap-2 grid-rows-4 grid  items-center">
+          <View
+            style={{ flex: 1 }}
+            className="text-gray-500 bg-gray-100 py-1 w-full items-center justify-center rounded-md"
+          >
+            <Text className="text-sm">{listing?.jobLevel}</Text>
+          </View>
+          <View
+            style={{ flex: 1 }}
+            className="text-gray-500 bg-gray-100 py-1 w-full items-center justify-center rounded-md"
+          >
+            <Text className="text-sm">{listing?.experience}</Text>
+          </View>
         </View>
         <View className="px-3 my-4">
           <View className="bg-gray-100 py-1 px-0.5 rounded-full flex flex-row">
@@ -143,12 +169,14 @@ const ListingDetail = ({ route }) => {
             <RenderOverview
               data={listing}
               requirements={requirements}
+              applicationTip={applicationTip}
               task={task}
             />
           ) : activeTab === "company" ? (
             <RenderCompany data={listing} />
           ) : null}
         </View>
+        <ApplyButton onPress={() => applyJob()} />
       </ScrollView>
       {isLoading && <AnimatedLoader />}
       <StatusBar style="dark" backgroundColor="#fff" translucent={false} />
@@ -156,7 +184,22 @@ const ListingDetail = ({ route }) => {
   );
 };
 
-const RenderOverview = ({ data, requirements, task }) => {
+const RenderOverview = ({ data, requirements, task, applicationTip }) => {
+  const openMail = async () => {
+    Alert.alert(
+      "Open Mail",
+      "Do you want to open mail app?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "OK",
+          onPress: () => Linking.openURL(`mailto:${data.applyEmail}`),
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
   return (
     <View className="bg-white py-3 px-3">
       <View className="mb-4">
@@ -191,6 +234,40 @@ const RenderOverview = ({ data, requirements, task }) => {
           );
         })}
       </View>
+      <View className="mb-4">
+        <Label label={"salary"} />
+        <Text className="text-sm text-gray-600">{data?.salary}</Text>
+      </View>
+      {data.applyEmail && (
+        <View className="mb-4">
+          <Label label={"how to apply"} />
+          <View className="flex items-center flex-row mb-2">
+            <Text className="text-sm text-gray-900 capitalize mr-2">
+              application email:
+            </Text>
+            <TouchableOpacity onPress={() => openMail()}>
+              <Text className="text-sm text-blue-500">{data?.applyEmail}</Text>
+            </TouchableOpacity>
+          </View>
+          {applicationTip.map((item, index) => {
+            return (
+              <View key={index} className="flex  flex-row mb-2">
+                <Ionicons
+                  name="ios-checkmark-sharp"
+                  size={15}
+                  color="#0096c7"
+                />
+                <Text
+                  style={{ flex: 1 }}
+                  className="ml-3 text-sm text-gray-900"
+                >
+                  {item}
+                </Text>
+              </View>
+            );
+          })}
+        </View>
+      )}
     </View>
   );
 };
@@ -217,6 +294,24 @@ const RenderCompany = ({ data }) => {
           );
         })}
       </View>
+      <View>
+        <Label label={"company size"} />
+        <Text className="text-sm text-gray-600">
+          {`${data?.companySize} employees`}
+        </Text>
+      </View>
+    </View>
+  );
+};
+
+const ApplyButton = ({ onPress }) => {
+  return (
+    <View className="mb-10 mx-3">
+      <TouchableOpacity onPress={onPress}>
+        <View className="bg-gray-900 hover:bg-gray-800 text-center py-3 items-center justify-center w-full px-4 rounded-md">
+          <Text className="text-base text-white font-semibold">Apply</Text>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
