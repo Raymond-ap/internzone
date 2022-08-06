@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { TailwindProvider } from "tailwindcss-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { HomeScreen, Onboarding, Preference } from "./screens";
+import { HomeScreen, Onboarding, Preference, ListingDetail } from "./screens";
 import React from "react";
 
 const Stack = createNativeStackNavigator();
@@ -32,8 +32,9 @@ export default function App() {
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="Onboarding" component={Onboarding} />
-          <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Preference" component={Preference} />
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="ListingDetail" component={ListingDetail} />
         </Stack.Navigator>
       </TailwindProvider>
     </NavigationContainer>
