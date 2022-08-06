@@ -8,6 +8,7 @@ import {
 import React, { Component } from "react";
 import { StatusBar } from "expo-status-bar";
 import { Ionicons } from "@expo/vector-icons";
+import { db } from "../../firebase";
 
 export class SearchScreen extends Component {
   state = {
@@ -17,6 +18,8 @@ export class SearchScreen extends Component {
     error: null,
     scrollHeight: 0,
   };
+
+  handleSearch = async (search) => {};
 
   render() {
     return (
@@ -38,10 +41,14 @@ export class SearchScreen extends Component {
             style={{ flex: 1 }}
             placeholder="Search jobs by keyword..."
             className="w-full bg-gray-200 text-gray-800 text-base rounded-lg px-3 py-2"
-            onChangeText={(text) => this.setState({ search: text })}
+            onChangeText={(search) => {
+              this.setState({ search });
+              this.handleSearch(search);
+            }}
             value={this.state.search}
           />
         </View>
+        <View className="px-3 py-4"></View>
         <StatusBar style="dark" backgroundColor="#fff" translucent={false} />
       </SafeAreaView>
     );
