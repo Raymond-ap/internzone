@@ -5,12 +5,13 @@ import {
   SafeAreaView,
   ScrollView,
   FlatList,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 import { Suggestion, ListingCard, RenderListings } from "../../components";
+import { db } from "../../firebase";
 
 const DataList = [{}, {}, {}, {}, {}, {}, {}, {}];
 
@@ -70,23 +71,21 @@ const HomeScreen = () => {
         "A great opportunity to grow and develop your skills",
         "A great opportunity to work with a team of talented people",
         "A great opportunity to work with a team of talented people",
-      ]
+      ],
     };
-
     // await db.collection("listings").add(listing);
   };
 
   return (
     <SafeAreaView style={{ flex: 1 }} className="bg-white">
       <Header scrollHeight={scrollHeight} />
-      <ScrollView 
-      style={{ flex: 1 }} 
-      showsVerticalScrollIndicator={false}
-      onScroll={(e) => {
-        const scrollHeight = e.nativeEvent.contentOffset.y;
-        setScrollHeight(scrollHeight);
-      }}
-
+      <ScrollView
+        style={{ flex: 1 }}
+        showsVerticalScrollIndicator={false}
+        onScroll={(e) => {
+          const scrollHeight = e.nativeEvent.contentOffset.y;
+          setScrollHeight(scrollHeight);
+        }}
       >
         <View className="py-5">
           <Suggestion />
@@ -101,10 +100,12 @@ const HomeScreen = () => {
 const Header = ({ scrollHeight }) => {
   return (
     <View
-    style={{
-      elevation: 5,
-    }}
-      className={`${scrollHeight > 0 && "shadow-lg"} shadow-sm px-3 bg-white py-2 flex flex-row items-center justify-between `}
+      style={{
+        elevation: 5,
+      }}
+      className={`${
+        scrollHeight > 0 && "shadow-lg"
+      } shadow-sm px-3 bg-white py-2 flex flex-row items-center justify-between `}
     >
       <Text className="text-xl font-bold capitalize tracking-wider">
         Internzone
