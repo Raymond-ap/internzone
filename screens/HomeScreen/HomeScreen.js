@@ -71,9 +71,7 @@ const HomeScreen = () => {
 const Header = ({ scrollHeight }) => {
   return (
     <View
-      style={{
-        elevation: 5,
-      }}
+      
       className={`${
         scrollHeight > 0 && "border-b border-gray-400 shadow-lg"
       } px-3 bg-white py-2 flex flex-row items-center justify-between z-50`}
