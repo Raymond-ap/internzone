@@ -7,7 +7,7 @@ const DataList = [{}, {}, {}, {}, {}, {}, {}, {}];
 const Suggestion = () => {
   return (
     <View>
-      <Text className="capitalize font-semibold text-base tracking-wider text-gray-800 px-5 mb-2">
+      <Text className="capitalize font-semibold text-base tracking-wider text-gray-800 px-3 mb-2">
         Suggestion
       </Text>
       <View

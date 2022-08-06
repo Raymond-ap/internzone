@@ -6,7 +6,7 @@ const DataList = [{}, {}, {}, {}, {}, {}, {}, {}];
 
 const RenderListings = () => {
   return (
-    <View className="px-5">
+    <View className="px-3">
       <View className="flex flex-row items-center justify-between mb-2">
         <Text className="capitalize font-semibold text-base tracking-wider text-gray-800 ">
           Recently added
