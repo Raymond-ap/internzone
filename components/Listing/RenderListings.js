@@ -1,10 +1,9 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import ListingCard from "./ListingCard";
-const DataList = [{}, {}, {}, {}, {}, {}, {}, {}];
 
 
-const RenderListings = () => {
+const RenderListings = ({data}) => {
   return (
     <View className="px-3">
       <View className="flex flex-row items-center justify-between mb-2">
@@ -17,8 +16,8 @@ const RenderListings = () => {
       </View>
 
       <View className="my-1">
-      {DataList.map((item, index) => {
-        return <ListingCard key={index}/>
+      {data.map((item, index) => {
+        return <ListingCard key={index} item={item}/>
       })}
       </View>
     </View>
