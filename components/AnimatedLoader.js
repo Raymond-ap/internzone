@@ -20,6 +20,6 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     justifyContent: "center",
-    // backgroundColor: "#00000061",
+    backgroundColor: "#fff",
   },
 });
