@@ -17,6 +17,7 @@ import {
   AnimatedLoader,
 } from "../../components";
 import { db } from "../../firebase";
+import { useNavigation } from "@react-navigation/native";
 
 const DataList = [{}, {}, {}, {}, {}, {}, {}, {}];
 
@@ -69,6 +70,7 @@ const HomeScreen = () => {
 };
 
 const Header = ({ scrollHeight }) => {
+  const navigation = useNavigation();
   return (
     <View
       
@@ -81,6 +83,7 @@ const Header = ({ scrollHeight }) => {
       </Text>
       <View className="flex items-center flex-row">
         <TouchableOpacity
+          onPress={() => navigation.navigate("SearchScreen")}
           activeOpacity={0.9}
           className="bg-gray-200 hover:bg-white p-1 rounded-full"
         >
