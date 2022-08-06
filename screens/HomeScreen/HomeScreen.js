@@ -16,7 +16,6 @@ const DataList = [{}, {}, {}, {}, {}, {}, {}, {}];
 
 const HomeScreen = () => {
   const [scrollHeight, setScrollHeight] = React.useState(0);
-  console.log(scrollHeight)
 
   return (
     <SafeAreaView style={{ flex: 1 }} className="bg-white">
@@ -44,9 +43,9 @@ const Header = ({ scrollHeight }) => {
   return (
     <View
     style={{
-      elevation: scrollHeight > 0 ? 0 : 2,
+      elevation: scrollHeight > 0 && 2,
     }}
-      className={`${scrollHeight > 0 && "shadow-lg"} px-5 bg-white py-2 flex flex-row items-center justify-between border-b border-gray-400`}
+      className={`${scrollHeight > 0 && "shadow-lg"} px-5 bg-white py-2 flex flex-row items-center justify-between `}
     >
       <Text className="text-xl font-bold capitalize tracking-wider">
         Internzone
