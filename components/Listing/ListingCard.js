@@ -1,22 +1,29 @@
-import { View, Text, TouchableOpacity, Platform } from "react-native";
+import { View, Text, TouchableOpacity, Platform, Image } from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
-const ListingCard = () => {
+const ListingCard = ({ item }) => {
+  const navigation = useNavigation();
   return (
     <TouchableOpacity
       activeOpacity={0.8}
+      onPress={() => navigation.navigate("ListingDetail", { docId: item.id })}
       className={` border px-1.5 py-3 border-gray-300 rounded-md hover:bg-gray-300 my-1 `}
     >
       <View className="flex flex-row justify-between mb-2">
         <View style={{ flex: 1 }} className="flex flex-row">
-          <View className="h-10 w-10 rounded-md object-cover bg-blue-800 mr-3" />
+          <Image
+            source={{ uri: item?.logo }}
+            resizeMode="cover"
+            className="h-10 w-10 rounded-md object-cover mr-3"
+          />
           <View style={{ flex: 1 }}>
             <Text className="font-semibold text-base tracking-wider capitalize text-gray-800 ">
-              Junior frontend developer
+              {item?.title}
             </Text>
             <Text className="text-gray-600 font-bold text-xs capitalize">
-              Accra Institute of technology
+              {item?.company}
             </Text>
           </View>
         </View>
@@ -33,19 +40,19 @@ const ListingCard = () => {
           style={{ flex: 1 }}
           className="bg-gray-200 w-full text-center hover:bg-gray-300 px-2 py-1.5 rounded-md font-bold text-xs capitalize"
         >
-          Full time
+          {item?.jobType}
         </Text>
         <Text
           style={{ flex: 1 }}
           className="bg-gray-200 w-full text-center mx-2 hover:bg-gray-300 px-2 py-1.5 rounded-md font-bold text-xs capitalize"
         >
-          internship
+          {item?.jobLevel}
         </Text>
         <Text
           style={{ flex: 1 }}
           className="bg-gray-200 w-full text-center hover:bg-gray-300 px-2 py-1.5 rounded-md font-bold text-xs capitalize"
         >
-          $3k/mo
+          {item?.location}
         </Text>
       </View>
       <View className="flex flex-row items-center"></View>
