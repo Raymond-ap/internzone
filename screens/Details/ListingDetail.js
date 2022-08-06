@@ -15,6 +15,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { AnimatedLoader } from "../../components";
 import { db } from "../../firebase";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ToogleBookman } from "../../utils/Bookman";
 
 const wait = (timeout) => {
   return new Promise((resolve) => {
@@ -34,7 +36,10 @@ const ListingDetail = ({ route }) => {
   const docId = route.params.docId;
   const navigation = useNavigation();
 
-  console.log(listing);
+  const getBookman = async () => {
+    const bookman = await AsyncStorage.getItem("bookman");
+    // console.log("bookman", bookman);
+  };
 
   const fetchListing = async () => {
     await db
@@ -72,6 +77,7 @@ const ListingDetail = ({ route }) => {
 
   React.useEffect(() => {
     fetchListing();
+    getBookman();
   }, [isLoading]);
 
   return (
@@ -89,7 +95,9 @@ const ListingDetail = ({ route }) => {
         </TouchableOpacity>
         {!isLoading && (
           <View className="flex flex-row items-center">
-            <TouchableOpacity activeOpacity={0.8}>
+            <TouchableOpacity activeOpacity={0.8}
+                onPress={() => ToogleBookman(docId)}
+            >
               <Ionicons name="ios-bookmark-outline" size={20} color="black" />
             </TouchableOpacity>
             <View className="mx-2" />
