@@ -43,9 +43,9 @@ const Header = ({ scrollHeight }) => {
   return (
     <View
     style={{
-      elevation: scrollHeight > 0 && 2,
+      elevation: 5,
     }}
-      className={`${scrollHeight > 0 && "shadow-lg"} px-5 bg-white py-2 flex flex-row items-center justify-between `}
+      className={`${scrollHeight > 0 && "shadow-lg"} shadow-sm px-5 bg-white py-2 flex flex-row items-center justify-between `}
     >
       <Text className="text-xl font-bold capitalize tracking-wider">
         Internzone
