@@ -6,6 +6,7 @@ import {
   FlatList,
   ScrollView,
   RefreshControl,
+  Image,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AnimatedLoader, ListingCard } from "../../components";
@@ -61,8 +62,12 @@ const Bookman = () => {
               <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
             }
           >
-            <View className="flex items-center justify-center h-full">
-              <View className="h-20 w-20 object-cover bg-blue-600 mb-3" />
+            <View className="flex items-center justify-center">
+              <Image
+                source={require("../../assets/empty.png")}
+                resizeMode="contain"
+                className="mb-5 w-64 h-64"
+              />
               <Text className="text-gray-600 text-base">
                 No saved jobs found. Save a job to see it here.
               </Text>
