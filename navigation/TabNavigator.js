@@ -1,20 +1,13 @@
-import React from 'react-native'
+import React from "react-native";
 import { View, Text } from "react-native";
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import {HomeScreen} from '../screens'
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { HomeScreen, Bookman } from "../screens";
 
-import { Ionicons, MaterialCommunityIcons} from '@expo/vector-icons'
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 
 
-const Bookman = () => {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Setting Screen</Text>
-    </View>
-  );
-};
 
 const TabNavigator = () => {
   return (
@@ -28,9 +21,11 @@ const TabNavigator = () => {
           } else if (route.name === "Bookman") {
             iconName = focused ? "bookmark" : "bookmark-outline";
           }
-          return <MaterialCommunityIcons name={iconName} size={25} color={color} />;
+          return (
+            <MaterialCommunityIcons name={iconName} size={22} color={color} />
+          );
         },
-        tabBarHideOnKeyboard: true, 
+        tabBarHideOnKeyboard: true,
         tabBarActiveTintColor: "#495057",
         tabBarInactiveTintColor: "#6B6F6E",
         tabBarStyle: {
@@ -58,4 +53,4 @@ const TabNavigator = () => {
   );
 };
 
-export default TabNavigator
+export default TabNavigator;
