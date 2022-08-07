@@ -18,6 +18,7 @@ import {
 } from "../../components";
 import { db } from "../../firebase";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const DataList = [{}, {}, {}, {}, {}, {}, {}, {}];
 
@@ -25,19 +26,31 @@ const HomeScreen = () => {
   const [scrollHeight, setScrollHeight] = React.useState(0);
   const [isLoading, setIsLoading] = React.useState(false);
   const [listing, setListing] = React.useState([]);
+  const [bookmanArray, setBookmanArray] = React.useState([]);
+
+  const getBookman = async () => {
+    const bookman = await AsyncStorage.getItem("bookman");
+    if (bookman) {
+      setBookmanArray(JSON.parse(bookman));
+    }
+  };
 
   const fetchData = async () => {
     setIsLoading(true);
-    await db
-      .collection("listings")
-      .onSnapshot((snapshot) => {
-        const listings = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setListing(listings);
-        setIsLoading(false);
-      });
+    try {
+      const listings = await db.collection("listings").get();
+      const listingsArray = listings.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setListing(listingsArray);
+      getBookman();
+      setIsLoading(false);
+      setIsLoading(false);
+    } catch (err) {
+      setIsLoading(false);
+      console.log(err);
+    }
   };
 
   React.useEffect(() => {
@@ -58,7 +71,7 @@ const HomeScreen = () => {
         <View className="py-5">
           <Suggestion data={listing} />
         </View>
-        <RenderListings data={listing} />
+        <RenderListings data={listing} bookmanArray={bookmanArray} />
       </ScrollView>
       <StatusBar style="dark" backgroundColor="#fff" translucent={false} />
       {isLoading && <AnimatedLoader />}
@@ -70,7 +83,6 @@ const Header = ({ scrollHeight }) => {
   const navigation = useNavigation();
   return (
     <View
-      
       className={`${
         scrollHeight > 0 && "border-b border-gray-400 shadow-lg"
       } px-3 bg-white py-2 flex flex-row items-center justify-between z-50`}
