@@ -28,7 +28,7 @@ const TabNavigator = () => {
           } else if (route.name === "Bookman") {
             iconName = focused ? "bookmark" : "bookmark-outline";
           }
-          return <MaterialCommunityIcons name={iconName} size={20} color={color} />;
+          return <MaterialCommunityIcons name={iconName} size={25} color={color} />;
         },
         tabBarHideOnKeyboard: true, 
         tabBarActiveTintColor: "#495057",
