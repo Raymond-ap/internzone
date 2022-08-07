@@ -6,6 +6,7 @@ import {
   ScrollView,
   FlatList,
   Dimensions,
+  RefreshControl,
 } from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
@@ -20,7 +21,11 @@ import { db } from "../../firebase";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const DataList = [{}, {}, {}, {}, {}, {}, {}, {}];
+const wait = (timeout) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+};
 
 const HomeScreen = () => {
   const [scrollHeight, setScrollHeight] = React.useState(0);
@@ -46,15 +51,22 @@ const HomeScreen = () => {
       setListing(listingsArray);
       getBookman();
       setIsLoading(false);
-      setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
       console.log(err);
     }
   };
 
+  const onRefresh = async() => {
+    setIsLoading(true);
+    await wait(1000);
+    fetchData();
+  };
+
   React.useEffect(() => {
     fetchData();
+    console.log(bookmanArray);
+
   }, []);
 
   return (
@@ -62,6 +74,12 @@ const HomeScreen = () => {
       <Header scrollHeight={scrollHeight} />
       <ScrollView
         style={{ flex: 1 }}
+        refreshControl={
+          <RefreshControl 
+            refreshing={isLoading}
+            onRefresh={onRefresh}
+          />
+        }
         showsVerticalScrollIndicator={false}
         onScroll={(e) => {
           const scrollHeight = e.nativeEvent.contentOffset.y;
