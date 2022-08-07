@@ -20,9 +20,7 @@ export default function App() {
     return false;
   };
 
-  LogBox.ignoreLogs([
-    "ViewPropTypes will be removed",
-  ]);
+  LogBox.ignoreLogs([]);
 
   React.useEffect(() => {
     initialLuanch();
