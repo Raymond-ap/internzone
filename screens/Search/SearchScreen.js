@@ -13,6 +13,7 @@ import { StatusBar } from "expo-status-bar";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { db } from "../../firebase";
 import { AnimatedLoader } from "../../components";
+import { ToogleBookman } from "../../utils/Bookman";
 
 export class SearchScreen extends Component {
   state = {
@@ -28,22 +29,20 @@ export class SearchScreen extends Component {
   handleSearch = async () => {
     this.setState({ searching: true });
     const { search } = this.state;
-    const data = await db
-      .collection("listings")
-      .onSnapshot((snapshot) => {
-        const listings = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        let results = listings.filter((listing) => {
-          return listing.title.toLowerCase().includes(search.toLowerCase());
-        });
-        if (results.length > 0) {
-          this.setState({ data: results, searching: false });
-        } else {
-          this.setState({ data: [], searching: false });
-        }
+    const data = await db.collection("listings").onSnapshot((snapshot) => {
+      const listings = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      let results = listings.filter((listing) => {
+        return listing.title.toLowerCase().includes(search.toLowerCase());
       });
+      if (results.length > 0) {
+        this.setState({ data: results, searching: false });
+      } else {
+        this.setState({ data: [], searching: false });
+      }
+    });
   };
 
   componentDidMount() {}
@@ -90,13 +89,17 @@ export class SearchScreen extends Component {
                 const scrollHeight = e.nativeEvent.contentOffset.y;
                 this.setState({ scrollHeight });
               }}
-              renderItem={({ item }) => <ResultCard data={item} navigation={this.props.navigation} />}
+              renderItem={({ item }) => (
+                <ResultCard data={item} navigation={this.props.navigation} />
+              )}
             />
           ) : this.state.searching ? (
             <AnimatedLoader />
           ) : (
             <View className="text-center">
-              <Text className="text-gray-600 text-base">No matching results found</Text>
+              <Text className="text-gray-600 text-base">
+                No matching results found
+              </Text>
             </View>
           )}
         </View>
@@ -110,7 +113,7 @@ export class SearchScreen extends Component {
 const ResultCard = ({ data, navigation }) => {
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate("ListingDetail", {docId: data.id})}
+      onPress={() => navigation.navigate("ListingDetail", { docId: data.id })}
       activeOpacity={0.9}
       className="flex flex-row w-full justify-between my-2 px-1 py-1 hover:bg-gray-100 "
     >
@@ -140,7 +143,10 @@ const ResultCard = ({ data, navigation }) => {
         </View>
       </View>
       <View className="">
-        <TouchableOpacity activeOpacity={0.8}>
+        <TouchableOpacity
+          onPress={() => ToogleBookman(data.id)}
+          activeOpacity={0.8}
+        >
           <Ionicons name="ios-bookmark-outline" size={20} color="black" />
         </TouchableOpacity>
       </View>
