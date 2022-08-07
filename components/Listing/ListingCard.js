@@ -2,9 +2,20 @@ import { View, Text, TouchableOpacity, Platform, Image } from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ToogleBookman } from "../../utils/Bookman";
 
-const ListingCard = ({ item }) => {
+const ListingCard = ({ item, bookmanArray }) => {
   const navigation = useNavigation();
+  const [bookmanArr, setBookmanArr] = React.useState(bookmanArray);
+
+  const getBookman = async () => {
+    const bookman = await AsyncStorage.getItem("bookman");
+    if (bookman) {
+      setBookmanArr(JSON.parse(bookman));
+    }
+  };
+
   return (
     <TouchableOpacity
       activeOpacity={0.8}
@@ -27,9 +38,19 @@ const ListingCard = ({ item }) => {
             </Text>
           </View>
         </View>
-        <TouchableOpacity activeOpacity={0.8}>
+        <TouchableOpacity
+          onPress={() => {
+            getBookman();
+            ToogleBookman(item.id);
+          }}
+          activeOpacity={0.8}
+        >
           <Ionicons
-            name="bookmark-outline"
+            name={`${
+              bookmanArr.includes(item.id)
+                ? "ios-bookmark"
+                : "ios-bookmark-outline"
+            }`}
             size={24}
             className="text-gray-500"
           />
