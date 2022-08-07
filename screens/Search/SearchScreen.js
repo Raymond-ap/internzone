@@ -44,9 +44,12 @@ export class SearchScreen extends Component {
           this.setState({ data: [], searching: false });
         }
       })
-      .then(() => {
-        this.setState({ searching: false });
-      });
+      .then((res) => {
+        console.log("res", res);
+      })
+      .catch((err) => {
+        console.log("err", err);
+      })
   };
 
   componentDidMount() {}
