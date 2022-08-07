@@ -96,7 +96,7 @@ export class SearchScreen extends Component {
             <AnimatedLoader />
           ) : (
             <View className="text-center">
-              <Text className="text-gray-600">No matching results found</Text>
+              <Text className="text-gray-600 text-base">No matching results found</Text>
             </View>
           )}
         </View>
