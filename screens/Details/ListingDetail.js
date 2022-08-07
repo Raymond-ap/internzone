@@ -95,8 +95,9 @@ const ListingDetail = ({ route }) => {
         </TouchableOpacity>
         {!isLoading && (
           <View className="flex flex-row items-center">
-            <TouchableOpacity activeOpacity={0.8}
-                onPress={() => ToogleBookman(docId)}
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => ToogleBookman(docId)}
             >
               <Ionicons name="ios-bookmark-outline" size={20} color="black" />
             </TouchableOpacity>
