@@ -4,8 +4,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { TailwindProvider } from "tailwindcss-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import TabNavigator from "./navigation/TabNavigator";
 
-import { HomeScreen, Onboarding, Preference, ListingDetail, SearchScreen } from "./screens";
+import { Onboarding, Preference, ListingDetail, SearchScreen } from "./screens";
 import React from "react";
 
 const Stack = createNativeStackNavigator();
@@ -20,7 +21,9 @@ export default function App() {
     return false;
   };
 
-  LogBox.ignoreLogs([]);
+  LogBox.ignoreLogs([
+    "ViewPropTypes will be removed from React Native. Migrate to ViewPropTypes exported from 'deprecated-react-native-prop-types'"
+  ]);
 
   React.useEffect(() => {
     initialLuanch();
@@ -35,7 +38,7 @@ export default function App() {
         >
           <Stack.Screen name="Onboarding" component={Onboarding} />
           <Stack.Screen name="Preference" component={Preference} />
-          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Home" component={TabNavigator} />
           <Stack.Screen name="ListingDetail" component={ListingDetail} />
           <Stack.Screen name="SearchScreen" component={SearchScreen} />
         </Stack.Navigator>
