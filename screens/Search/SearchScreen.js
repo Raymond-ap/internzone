@@ -76,7 +76,7 @@ export class SearchScreen extends Component {
               this.setState({ search });
               this.handleSearch();
             }}
-            value={this.state.search}
+            value={this.state.search.trim()}
           />
         </View>
 
