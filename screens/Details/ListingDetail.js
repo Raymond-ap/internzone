@@ -74,9 +74,8 @@ const ListingDetail = ({ route }) => {
   };
 
   React.useEffect(() => {
-    console.log(bookmanArray);
-    fetchListing();
     getBookman();
+    fetchListing();
   }, [isLoading]);
 
   return (
