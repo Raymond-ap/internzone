@@ -32,32 +32,30 @@ const ListingDetail = ({ route }) => {
   const [task, setTask] = React.useState([]);
   const [applicationTip, setApplicationTip] = React.useState([]);
   const [scrollHeight, setScrollHeight] = React.useState(0);
+  const [bookmanArray, setBookmanArray] = React.useState([]);
   const tabs = ["overview", "company"];
   const docId = route.params.docId;
   const navigation = useNavigation();
 
   const getBookman = async () => {
     const bookman = await AsyncStorage.getItem("bookman");
-    // console.log("bookman", bookman);
+    if (bookman) {
+      setBookmanArray(JSON.parse(bookman));
+    }
   };
 
   const fetchListing = async () => {
-    await db
-      .collection("listings")
-      .doc(docId)
-      .onSnapshot((snapshot) => {
-        setListing(snapshot.data());
-        setRequirements(snapshot.data().requirements);
-        setTask(snapshot.data().task);
-        setApplicationTip(snapshot.data().applyRequirements);
-        setIsLoading(false);
-      })
-      .then(() => {
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.log("message", error.message);
-      });
+    try {
+      const doc = await db.collection("listings").doc(docId).get();
+      setListing(doc.data());
+      setRequirements(doc.data().requirements);
+      setTask(doc.data().task);
+      setApplicationTip(doc.data().applyRequirements);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      console.log(error);
+    }
   };
 
   const onRefresh = async () => {
@@ -76,6 +74,7 @@ const ListingDetail = ({ route }) => {
   };
 
   React.useEffect(() => {
+    console.log(bookmanArray);
     fetchListing();
     getBookman();
   }, [isLoading]);
@@ -97,13 +96,24 @@ const ListingDetail = ({ route }) => {
           <View className="flex flex-row items-center">
             <TouchableOpacity
               activeOpacity={0.8}
-              onPress={() => ToogleBookman(docId)}
+              onPress={() => {
+                ToogleBookman(docId);
+                getBookman();
+              }}
             >
-              <Ionicons name="ios-bookmark-outline" size={20} color="black" />
+              <Ionicons
+                name={`${
+                  bookmanArray.includes(docId)
+                    ? "ios-bookmark"
+                    : "ios-bookmark-outline"
+                }`}
+                size={24}
+                color="black"
+              />
             </TouchableOpacity>
             <View className="mx-2" />
             <TouchableOpacity activeOpacity={0.8}>
-              <Ionicons name="ios-share-outline" size={20} color="black" />
+              <Ionicons name="ios-share-outline" size={24} color="black" />
             </TouchableOpacity>
           </View>
         )}
