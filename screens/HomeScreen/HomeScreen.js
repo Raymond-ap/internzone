@@ -37,9 +37,6 @@ const HomeScreen = () => {
         }));
         setListing(listings);
         setIsLoading(false);
-      })
-      .then(() => {
-        setIsLoading(false);
       });
   };
 
