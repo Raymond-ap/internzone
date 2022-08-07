@@ -3,7 +3,7 @@ import React from "react";
 import ListingCard from "./ListingCard";
 
 
-const RenderListings = ({data}) => {
+const RenderListings = ({data, bookmanArray}) => {
   return (
     <View className="px-3">
       <View className="flex flex-row items-center justify-between mb-2">
@@ -17,7 +17,7 @@ const RenderListings = ({data}) => {
 
       <View className="my-1">
       {data.map((item, index) => {
-        return <ListingCard key={index} item={item}/>
+        return <ListingCard key={index} item={item} bookmanArray={bookmanArray} />
       })}
       </View>
     </View>
