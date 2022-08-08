@@ -16,7 +16,7 @@ const RenderListings = ({data, bookmanArray}) => {
       </View>
 
       <View className="my-1">
-      {data.map((item, index) => {
+      {data.slice(0,10).map((item, index) => {
         return <ListingCard key={index} item={item} bookmanArray={bookmanArray} />
       })}
       </View>
