@@ -4,7 +4,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
-  FlatList,
+  Image,
   Dimensions,
   RefreshControl,
 } from "react-native";
@@ -20,6 +20,7 @@ import {
 import { db } from "../../firebase";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { HandleOffline } from "../../utils/Offline";
 
 const wait = (timeout) => {
   return new Promise((resolve) => {
@@ -41,8 +42,8 @@ const HomeScreen = () => {
   };
 
   const fetchData = async () => {
-    setIsLoading(true);
     try {
+      setIsLoading(true);
       const listings = await db.collection("listings").get();
       const listingsArray = listings.docs.map((doc) => ({
         id: doc.id,
@@ -52,12 +53,11 @@ const HomeScreen = () => {
       getBookman();
       setIsLoading(false);
     } catch (err) {
-      setIsLoading(false);
-      console.log(err);
+      HandleOffline(err.message, fetchData);
     }
   };
 
-  const onRefresh = async() => {
+  const onRefresh = async () => {
     setIsLoading(true);
     await wait(1000);
     fetchData();
@@ -65,34 +65,63 @@ const HomeScreen = () => {
 
   React.useEffect(() => {
     fetchData();
-    console.log(bookmanArray);
-
   }, []);
 
   return (
     <SafeAreaView style={{ flex: 1 }} className="bg-white">
       <Header scrollHeight={scrollHeight} />
-      <ScrollView
-        style={{ flex: 1 }}
-        refreshControl={
-          <RefreshControl 
-            refreshing={isLoading}
-            onRefresh={onRefresh}
-          />
-        }
-        showsVerticalScrollIndicator={false}
-        onScroll={(e) => {
-          const scrollHeight = e.nativeEvent.contentOffset.y;
-          setScrollHeight(scrollHeight);
-        }}
-      >
-        <View className="py-5">
-          <Suggestion data={listing} />
-        </View>
-        <RenderListings data={listing} bookmanArray={bookmanArray} />
-      </ScrollView>
-      <StatusBar style="dark" backgroundColor="#fff" translucent={false} />
+      {listing.length > 0 ? (
+        <ScrollView
+          style={{ flex: 1 }}
+          refreshControl={
+            <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
+          }
+          showsVerticalScrollIndicator={false}
+          onScroll={(e) => {
+            const scrollHeight = e.nativeEvent.contentOffset.y;
+            setScrollHeight(scrollHeight);
+          }}
+        >
+          <View className="py-5">
+            <Suggestion data={listing} />
+          </View>
+          <RenderListings data={listing} bookmanArray={bookmanArray} />
+        </ScrollView>
+      ) : (
+        <ScrollView
+          contentContainerStyle={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          refreshControl={
+            <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
+          }
+          showsVerticalScrollIndicator={false}
+          onScroll={(e) => {
+            const scrollHeight = e.nativeEvent.contentOffset.y;
+            setScrollHeight(scrollHeight);
+          }}
+        >
+          <View className="py-5 px-3 items-center">
+            <Image
+              source={require("../../assets/empty.png")}
+              resizeMode="contain"
+              className="mb-5 w-64 h-64"
+            />
+            <Text className="text-center">No listings found</Text>
+            <TouchableOpacity
+              onPress={() => fetchData()}
+              activeOpacity={0.8}
+              className="my-10 w-32 py-2 rounded-md shadow-sm justify-center items-center bg-blue-600"
+            >
+              <Text className="text-white text-base">Retry</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      )}
       {isLoading && <AnimatedLoader />}
+      <StatusBar style="dark" backgroundColor="#fff" translucent={false} />
     </SafeAreaView>
   );
 };

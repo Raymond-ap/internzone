@@ -18,7 +18,7 @@ const ListingCard = ({ item, bookmanArray }) => {
 
   React.useEffect(() => {
     getBookman();
-  }, [bookmanArr]);
+  }, []);
 
   return (
     <TouchableOpacity

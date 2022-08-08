@@ -17,7 +17,7 @@ import { AnimatedLoader } from "../../components";
 import { db } from "../../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ToogleBookman } from "../../utils/Bookman";
-import { handleOffline } from "../../utils/Offline";
+import { HandleOffline } from "../../utils/Offline";
 
 const wait = (timeout) => {
   return new Promise((resolve) => {
@@ -55,7 +55,7 @@ const ListingDetail = ({ route }) => {
       getBookman();
       setIsLoading(false);
     } catch (error) {
-      handleOffline(error.message, fetchListing);
+      HandleOffline(error.message, fetchListing);
     }
   };
 
@@ -82,7 +82,7 @@ const ListingDetail = ({ route }) => {
     <SafeAreaView className="bg-white" style={{ flex: 1 }}>
       <View
         className={`flex flex-row items-center justify-between px-3 py-2 z-50 ${
-          scrollHeight > 0 ? "border-b border-gray-400 shadow-lg" : ""
+          scrollHeight > 0 ? "border-b border-gray-400 shadow-lg" : "border-none"
         }`}
       >
         <TouchableOpacity

@@ -7,13 +7,14 @@ import {
   ScrollView,
   RefreshControl,
   Image,
+  TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AnimatedLoader, ListingCard } from "../../components";
 import { StatusBar } from "expo-status-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { db } from "../../firebase";
-import { handleOffline } from "../../utils/Offline";
+import { HandleOffline } from "../../utils/Offline";
 
 class Bookman extends Component {
   constructor(props) {
@@ -29,12 +30,6 @@ class Bookman extends Component {
   componentDidMount() {
     this.getBookman();
     this.fetchData();
-    console.log(
-      "listing",
-      this.state.listing,
-      "\nbookman",
-      this.state.bookmanID
-    );
   }
 
   getBookman = async () => {
@@ -46,7 +41,7 @@ class Bookman extends Component {
 
   fetchData = async () => {
     const docIds = this.state.bookmanID;
-    // this.setState({ isLoading: true });
+    this.setState({isLoading: true})
     try {
       const listings = await db.collection("listings").get();
       const listingsArray = listings.docs.map((doc) => ({
@@ -58,7 +53,7 @@ class Bookman extends Component {
       });
       this.setState({ listing: filteredListings, isLoading: false });
     } catch (err) {
-      handleOffline(err.message, this.fetchData);
+      HandleOffline(err.message, this.fetchData);
     }
   };
 
@@ -69,7 +64,7 @@ class Bookman extends Component {
   };
 
   onRefresh = async () => {
-    setIsLoading(true);
+    this.setState({isLoading: true})
     await this.wait(2000);
     this.getBookman();
     this.fetchData();
@@ -79,7 +74,7 @@ class Bookman extends Component {
     return (
       <SafeAreaView style={{ flex: 1 }} className="bg-white">
         <Header scrollHeight={this.state.scrollHeight} />
-        <View className="px-3 py-3">
+        <View style={{ flex: 1 }} className="px-3 py-3">
           {this.state.listing.length > 0 ? (
             <FlatList
               data={this.state.listing}
@@ -112,15 +107,18 @@ class Bookman extends Component {
                 />
               }
             >
-              <View className="items-center">
+              <View className="py-5 px-3 items-center">
                 <Image
                   source={require("../../assets/empty.png")}
                   resizeMode="contain"
                   className="mb-5 w-64 h-64"
                 />
-                <Text className="text-gray-600 text-base">
-                  No saved jobs found. Save a job to see it here.
+                <Text className="text-gray-600 text-base text-center">
+                  No saved jobs found. Save a job to see it here
                 </Text>
+                <TouchableOpacity onPress={() => this.fetchData()} activeOpacity={0.8} className="my-10 w-32 py-2 rounded-md shadow-sm justify-center items-center bg-blue-600">
+              <Text className="text-white text-base">Retry</Text>
+            </TouchableOpacity>
               </View>
             </ScrollView>
           )}

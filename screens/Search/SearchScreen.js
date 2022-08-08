@@ -14,6 +14,7 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { db } from "../../firebase";
 import { AnimatedLoader } from "../../components";
 import { ToogleBookman } from "../../utils/Bookman";
+import { HandleOffline } from "../../utils/Offline";
 
 export class SearchScreen extends Component {
   state = {
