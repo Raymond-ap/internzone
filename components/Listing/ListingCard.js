@@ -16,6 +16,10 @@ const ListingCard = ({ item, bookmanArray }) => {
     }
   };
 
+  React.useEffect(() => {
+    getBookman();
+  }, [bookmanArr]);
+
   return (
     <TouchableOpacity
       activeOpacity={0.8}
@@ -47,7 +51,7 @@ const ListingCard = ({ item, bookmanArray }) => {
         >
           <Ionicons
             name={`${
-              bookmanArr.includes(item.id)
+              bookmanArray.includes(item.id)
                 ? "ios-bookmark"
                 : "ios-bookmark-outline"
             }`}
