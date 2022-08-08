@@ -13,36 +13,40 @@ import { AnimatedLoader, ListingCard } from "../../components";
 import { StatusBar } from "expo-status-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { db } from "../../firebase";
+import { handleOffline } from "../../utils/Offline";
 
 class Bookman extends Component {
   constructor(props) {
     super(props);
     this.state = {
       scrollHeight: 0,
-      isLoading: false,
+      isLoading: true,
       listing: [],
       bookmanID: [],
     };
   }
+
   componentDidMount() {
     this.getBookman();
     this.fetchData();
+    console.log(
+      "listing",
+      this.state.listing,
+      "\nbookman",
+      this.state.bookmanID
+    );
   }
-  // const [scrollHeight, setscrollHeight] = React.useState(0);
-  // const [isLoading, setIsLoading] = React.useState(false);
-  // const [listing, setListing] = React.useState([]);
-  // const [bookmanID, setBookmanID] = React.useState([]);
 
   getBookman = async () => {
     const bookman = await AsyncStorage.getItem("bookman");
     if (bookman) {
-      this.setState({bookmanID: JSON.parse(bookman)});
+      this.setState({ bookmanID: JSON.parse(bookman) });
     }
   };
 
   fetchData = async () => {
     const docIds = this.state.bookmanID;
-    this.setState({ isLoading: true });
+    // this.setState({ isLoading: true });
     try {
       const listings = await db.collection("listings").get();
       const listingsArray = listings.docs.map((doc) => ({
@@ -54,8 +58,7 @@ class Bookman extends Component {
       });
       this.setState({ listing: filteredListings, isLoading: false });
     } catch (err) {
-      this.setState({ isLoading: false });
-      console.log(err);
+      handleOffline(err.message, this.fetchData);
     }
   };
 
@@ -97,6 +100,11 @@ class Bookman extends Component {
             />
           ) : (
             <ScrollView
+              contentContainerStyle={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
               refreshControl={
                 <RefreshControl
                   refreshing={this.state.isLoading}
@@ -104,7 +112,7 @@ class Bookman extends Component {
                 />
               }
             >
-              <View className="flex items-center justify-center">
+              <View className="items-center">
                 <Image
                   source={require("../../assets/empty.png")}
                   resizeMode="contain"
