@@ -24,7 +24,7 @@ const ListingCard = ({ item, bookmanArray }) => {
     <TouchableOpacity
       activeOpacity={0.8}
       onPress={() => navigation.navigate("ListingDetail", { docId: item.id })}
-      className={` border px-1.5 py-3 border-gray-300 rounded-md hover:bg-gray-300 my-1 `}
+      className={` px-1.5 py-3  rounded-md  hover:bg-gray-300 my-1 `}
     >
       <View className="flex flex-row justify-between mb-2">
         <View style={{ flex: 1 }} className="flex flex-row">
