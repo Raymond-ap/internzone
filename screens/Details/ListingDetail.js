@@ -17,6 +17,7 @@ import { AnimatedLoader } from "../../components";
 import { db } from "../../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ToogleBookman } from "../../utils/Bookman";
+import { handleOffline } from "../../utils/Offline";
 
 const wait = (timeout) => {
   return new Promise((resolve) => {
@@ -54,8 +55,7 @@ const ListingDetail = ({ route }) => {
       getBookman();
       setIsLoading(false);
     } catch (error) {
-      setIsLoading(false);
-      console.log(error);
+      handleOffline(error.message, fetchListing);
     }
   };
 
