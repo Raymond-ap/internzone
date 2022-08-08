@@ -51,6 +51,7 @@ const ListingDetail = ({ route }) => {
       setRequirements(doc.data().requirements);
       setTask(doc.data().task);
       setApplicationTip(doc.data().applyRequirements);
+      getBookman();
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -74,7 +75,6 @@ const ListingDetail = ({ route }) => {
   };
 
   React.useEffect(() => {
-    getBookman();
     fetchListing();
   }, [isLoading]);
 
@@ -96,8 +96,8 @@ const ListingDetail = ({ route }) => {
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() => {
-                ToogleBookman(docId);
                 getBookman();
+                ToogleBookman(docId);
               }}
             >
               <Ionicons
