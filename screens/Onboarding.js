@@ -14,7 +14,7 @@ const Onboarding = () => {
   const navigation = useNavigation();
 
   const handleNavigation = async () => {
-    navigation.replace("Preference");
+    navigation.replace("Home");
     // const firstLaunch = await AsyncStorage.getItem("firstLaunch");
     // if (!firstLaunch) {
     //   await AsyncStorage.setItem("firstLaunch", "true");
