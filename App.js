@@ -33,7 +33,7 @@ export default function App() {
     <NavigationContainer>
       <TailwindProvider>
         <Stack.Navigator
-          initialRouteName="Home"
+          initialRouteName="Onboarding"
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="Onboarding" component={Onboarding} />
