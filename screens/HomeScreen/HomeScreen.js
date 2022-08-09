@@ -5,7 +5,7 @@ import {
   SafeAreaView,
   ScrollView,
   Image,
-  Dimensions,
+  FlatList,
   RefreshControl,
 } from "react-native";
 import React from "react";
@@ -14,7 +14,6 @@ import { StatusBar } from "expo-status-bar";
 import {
   Suggestion,
   ListingCard,
-  RenderListings,
   AnimatedLoader,
 } from "../../components";
 import { db } from "../../firebase";
@@ -71,7 +70,34 @@ const HomeScreen = () => {
     <SafeAreaView style={{ flex: 1 }} className="bg-white">
       <Header scrollHeight={scrollHeight} />
       {listing.length > 0 ? (
-        <ScrollView
+        <FlatList
+          refreshControl={
+            <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
+          }
+          showsVerticalScrollIndicator={false}
+          onScroll={({ nativeEvent }) => {
+            setScrollHeight(nativeEvent.contentOffset.y);
+          }}
+          data={listing}
+          keyExtractor={(_, index) => index.toString()}
+          ListHeaderComponent={() => (
+            <View className="pt-5">
+              <Suggestion data={listing} />
+              <View>
+                <Text className="px-3 py-3 capitalize font-semibold text-base tracking-wider text-gray-800 ">
+                  Recently added
+                </Text>
+              </View>
+            </View>
+          )}
+          renderItem={({ item }) => (
+            <View className="px-3">
+              <ListingCard item={item} bookmanArray={bookmanArray} />
+            </View>
+          )}
+        />
+      ) : (
+        /* <ScrollView
           style={{ flex: 1 }}
           refreshControl={
             <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
@@ -86,8 +112,7 @@ const HomeScreen = () => {
             <Suggestion data={listing} />
           </View>
           <RenderListings data={listing} bookmanArray={bookmanArray} />
-        </ScrollView>
-      ) : (
+        </ScrollView> */
         <ScrollView
           contentContainerStyle={{
             flex: 1,
